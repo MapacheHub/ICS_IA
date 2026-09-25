@@ -1,0 +1,13 @@
+**Ejercicio 1 — Instalar y configurar TypeScript.** Instalar TypeScript de forma global (`npm i -g typescript`), comprobar la versión de `npm`, crear una carpeta de proyecto con un `index.html` básico y un archivo `principal.ts` que solo contenga un `console.log('Hola TypeScript')`. Compilarlo con `tsc principal.ts` y comprobar que se genera `principal.js`. Por último, ejecutar `tsc --init` para generar `tsconfig.json`.
+
+
+**Ejercicio 2 — Tipos básicos, inferencia y objetos.** Declarar variables `edad` (number), `nombre` (string) y `esActivo` (boolean), unas veces dejando que TypeScript infiera el tipo y otras anotándolo explícitamente; provocar y corregir errores de tipos. Después crear un objeto tipado `persona: { nombre: string; edad: number; esSocio: boolean }` e intentar asignarle una propiedad inexistente (`persona.apellido`) para observar el error.
+
+
+**Ejercicio 3 — Interfaces, *arrays* y funciones tipadas.** Definir una interfaz `Alumno` con `nombre` (string), `nota` (number) y `activo` (boolean, opcional), crear un array `alumnos: Alumno[]` con al menos cuatro registros, y escribir una función `calcularMedia(alumnos: Alumno[]): number` que devuelva la nota media usando `reduce`. Añadir una segunda función `mostrarResumen(alumno: Alumno): void` que imprima por consola sus datos, y forzar un error de tipos llamando a `calcularMedia` con un argumento incorrecto.
+
+
+**Ejercicio 4 — Uniones, tipos literales y enums.** Crear `enum Rol { ADMIN, EDITOR, LECTOR }` y una interfaz `Usuario` que use ese `enum` y un tipo unión `estado: 'activo' | 'inactivo' | 'pendiente'`. Escribir una función `describirUsuario(usuario: Usuario): string` que, según el `rol` y el `estado`, devuelva un mensaje distinto (usando comparaciones sobre el tipo literal y el enum), y una matriz `usuarios: Usuario[]` con varios casos, incluido uno con un valor de `estado` inválido para comprobar que TypeScript lo rechaza.
+
+
+**Ejercicio 5  — Mini proyecto.** Organizar un proyecto con los `.ts` en `src/` (por ejemplo `modelos.ts` con las interfaces `Alumno` y `Curso`, y `principal.ts` con la lógica), configurar `tsconfig.json` con `rootDir: "./src"`, `outDir: "./dist"`, excluyendo cualquier archivo con errores deliberados (`exclude`) e incluyendo explícitamente `principal.ts` (`include`). El proyecto debe combinar al menos una interfaz, un enum, un tipo unión, una función tipada con *array* de objetos y comprobar que `tsc -w` recompila automáticamente al guardar cambios en `src/`.

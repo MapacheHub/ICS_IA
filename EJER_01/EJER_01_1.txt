@@ -1,0 +1,18 @@
+1. Crea una carpeta en tu escritorio llamada ***ICS_IA.***
+2. Instalar ***Git*** en local
+3. Crear repositorios público llamado ***ICS_IA*** en GitHub
+4. Clonar los repositorios en local en la carpeta del punto 1.
+5. Envía un mensaje al profesor con la URL de tu repositorio.
+6. En tu equipo, crea una carpeta dentro de ***ICS_IA*** llamada ***EJER_01*** para realizar el siguiente ejercicio:
+- En los módulos de **DWEC** e **ICS_IA** nos vamos a centrar en la programación de las páginas web, no en el diseño de las mismas. Para ello, si fuera necesario, utilizaremos herramientas de Inteligencia Artificial.
+- Inicialmente buscaremos diseños sencillos que no utilicen *frameworks* CSS como Tailwind o Bootstrap, es decir, que solamente utilicen código HTML y CSS.
+
+📃 Diseña usando alguna herramienta de IA una página web similar a la de la imagen, con las mismas secciones, pero utilizando otro tema, colores, iconos, etc.:
+
+!Captura.jpeg
+
+- IMPORTANTE: Has de hacerla con HTML y CSS puro, sin *frameworks*.
+- Guarda en un archivo **mensajes.txt** los *prompts* que utilizaste para crearla y el nombre de la IA que utilizaste.
+- Revisa el código generado por la IA y si fuera posible elimina todo lo que creas innecesario.
+- Guarda el código HTML y CSS de la página (en archivos distintos) y otros recursos que hayas utilizados.
+- Añade un programa Javascript que al hacer clic sobre cada una de las tres tarjetas nos muestre un mensaje con la descripción de la misma.
