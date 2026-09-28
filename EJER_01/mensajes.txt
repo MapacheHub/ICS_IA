@@ -1,0 +1,7 @@
+puedes hacerme una pagina de un instituto basica usando html y css
+
+bien, ahora haz una pagina de una tienda, con una tematica diferente al de la pagina que me acabas de crear pero manteniendo en la medida de lo posible las secciones
+
+ahora añade un javascript para que cuando haga clic en cada una de las tres tarjetas que hay en el medio nos muestre un mensaje con su descripción
+
+bien, ahora separame el javascript en un archivo aparte
