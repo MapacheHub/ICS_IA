@@ -1,0 +1,14 @@
+1.El punto de entrada esta en scr/main.jsx y el comando createRoot crea la raíz de React en un contenedor de la pagina web
+
+2.El ID del elemento HTML donde se monta la aplicación es root ( <div id="root"></div> )
+y esta definido en index.html
+
+3.[Raiz del DOM: #root] => <StrictMode> (main.jsx) => <App /> (App.jsx)
+
+4.Si eliminamos <StrictMode> de main.jsx realmente no se percibirán ningún cambio, en cambio en la consola los componentes dejaran de renderizarse 2 veces
+
+5.
+* {reactiLogo} Inserta la variable que contiene la ruta de la imagen importada para usarla como el atributo src de la etiqueta <img>
+* {count} Evalua y muestra en pantalla el valor actual de la variable de estado "count"
+* {setCount((count) => count + 1)} es una función que añade un +1 a la variable "count" cuando se le da click
+6.
