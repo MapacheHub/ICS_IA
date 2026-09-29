@@ -1,0 +1,116 @@
+## Ejercicio 1 · Explora la estructura del proyecto
+
+Crea un proyecto llamado `EJER_02.1` con Vite, eligiendo **React** y la variante **JavaScript**. A continuación:
+
+1. Instala las dependencias y abre el proyecto en Visual Studio Code con `code .`.
+
+Responde brevemente, consultando los archivos del proyecto:
+
+1. ¿En qué archivo está el punto de entrada de la aplicación? ¿Qué hace la función `createRoot`?
+2. ¿Cuál es el ID del elemento HTML donde se monta la aplicación? ¿En qué archivo está definido?
+3. Dibuja el árbol de componentes que se renderiza al arrancar el proyecto recién creado.
+4. ¿Qué ocurre en la página si eliminas `<StrictMode>` de `main.jsx`? ¿Y en la consola en modo desarrollo?
+5. Abre `App.jsx` y localiza tres fragmentos de código JavaScript escritos entre llaves `{ }` dentro del JSX. Explica qué hace cada uno.
+6. ¿Qué es el elemento `<>` que envuelve el JSX devuelto por `App`? ¿Genera algún elemento en el DOM? Compruébalo con las herramientas de desarrollo del navegador (pestaña *Elementos*).
+
+---
+
+## Ejercicio 2 · Localización de errores
+
+Cada fragmento contiene **un error**. Indica cuál es, qué síntoma produce y escribe la versión corregida.
+
+**2.1**
+
+```jsx
+export function saludo() {
+  return<p>¡Hola, clase!</p>;
+}
+```
+
+**2.2**
+
+```jsx
+export function Tarjeta() {
+  return (
+    <h2>Desarrollo Web en Entorno Cliente</h2>
+    <p>Segundo curso de DAW</p>
+  );
+}
+```
+
+**2.3**
+
+```jsx
+// Archivo: src/Pie.jsx
+function Pie() {
+  return<footer>© Departamento de Informática</footer>;
+}
+
+// Archivo: src/App.jsx
+import { Pie } from './Pie';
+```
+
+**2.4**
+
+```jsx
+// Archivo: src/Cabecera.jsx
+export function Cabecera() {
+  return<header>Mi aplicación</header>;
+}
+
+// Archivo: src/App.jsx
+import Cabecera from './Cabecera';
+```
+
+**2.5**
+
+```jsx
+export function Fecha() {
+  const anioActual = new Date().getFullYear();
+  return<p>Estamos en el año anioActual</p>;
+}
+```
+
+---
+
+## Ejercicio 3 · Construye un árbol de componentes
+
+Vas a crear la página de presentación de un módulo formativo con este árbol:
+
+```
+StrictMode
+└── App
+    ├── Cabecera
+    ├── Principal
+    │   ├── Bienvenida
+    │   └── ListaUnidades
+    └── Pie
+```
+
+**Requisitos:**
+
+1. Cada componente va en su **propio archivo** dentro de `src/componentes/`, con exportación con nombre (`export function ...`).
+2. `App` importa solo `Cabecera`, `Principal` y `Pie`. `Principal` importa `Bienvenida` y `ListaUnidades`.
+3. `App` devuelve un **fragmento** con los tres componentes, sin `div` envolvente.
+4. `Cabecera` guarda en una constante `nombreModulo` el nombre del módulo y lo muestra en un `<h1>` usando llaves.
+5. `Bienvenida` muestra un emoji 🎓 accesible (con `role` y `aria-label`) y un texto de bienvenida.
+6. `ListaUnidades` muestra una lista `<ul>` con al menos tres unidades de trabajo escritas directamente en el JSX.
+7. `Pie` muestra el año actual, calculado con `new Date().getFullYear()`.
+8. Elimina `App.css` y las importaciones que ya no se usen. No debe quedar ningún aviso de ESLint.
+
+**Entrega:** carpeta `src` comprimida y captura de la pestaña **Components** de React Developer Tools mostrando el árbol. Si aún no la has instalado, usa la pestaña *Elementos* del navegador.
+
+---
+
+## Ejercicio 4 · Funciones normales y funciones flecha
+
+1. Reescribe `Pie` y `Bienvenida` del ejercicio anterior con **sintaxis de función flecha**, manteniendo la exportación con nombre.
+2. Crea un componente `RelojEstatico` con función flecha que muestre la hora en el momento del renderizado:
+
+```jsx
+const hora = new Date().toLocaleTimeString('es-ES');
+```
+
+Colócalo dentro de `Cabecera`.
+
+1. Recarga la página varias veces. ¿La hora cambia sola mientras miras la página, o solo al recargar? ¿Por qué crees que ocurre esto? Con lo que sabes hasta ahora basta una hipótesis; lo veremos en la siguiente unidad.
