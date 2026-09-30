@@ -7,6 +7,7 @@ import './App.css'
 import { Cabecera } from './componentes/Cabecera';
 import { Principal } from './componentes/Principal';
 import { Pie } from './componentes/Pie';
+import Captura from './Captura/Captura'
 
 export function Saludo() {
   return<p>¡Hola, clase!</p>;

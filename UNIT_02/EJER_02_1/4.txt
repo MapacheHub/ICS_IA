@@ -1,0 +1,1 @@
+La hora solo cambia al recargar la pagina, esto es debido que solo recoge la hora cuando carga la pagina, no constantemente
