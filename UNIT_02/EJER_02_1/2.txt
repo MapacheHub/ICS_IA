@@ -1,0 +1,85 @@
+2.1
+
+export function saludo() {
+  return<p>¡Hola, clase!</p>;
+}
+
+- Va a fallar por que la funcion esta en minusculas
+
+export function Saludo() {
+  return<p>¡Hola, clase!</p>;
+}
+
+2.2
+
+export function Tarjeta() {
+  return (
+    <h2>Desarrollo Web en Entorno Cliente</h2>
+    <p>Segundo curso de DAW</p>
+  );
+}
+
+- El jsx debe devolver un unico elemento, en este ejemplo esta devolviendo 2
+
+export function Tarjeta() {
+  return (
+    <>
+        <h2>Desarrollo Web en Entorno Cliente</h2>
+        <p>Segundo curso de DAW</p>
+    </>
+  );
+}
+
+2.3
+
+// Archivo: src/Pie.jsx
+function Pie() {
+  return<footer>© Departamento de Informática</footer>;
+}
+
+// Archivo: src/App.jsx
+import { Pie } from './Pie';
+
+- En ningun momento exportas "Pie"
+
+// Archivo: src/Pie.jsx
+export function Pie() {
+  return<footer>© Departamento de Informática</footer>;
+}
+
+// Archivo: src/App.jsx
+import { Pie } from './Pie.jsx';
+
+2.4
+
+// Archivo: src/Cabecera.jsx
+export function Cabecera() {
+  return<header>Mi aplicación</header>;
+}
+
+// Archivo: src/App.jsx
+import Cabecera from './Cabecera';
+
+- Al importar la funcion "Cabecera", se hace sin llaves
+
+// Archivo: src/Cabecera.jsx
+export function Cabecera() {
+  return<header>Mi aplicación</header>;
+}
+
+// Archivo: src/App.jsx
+import { Cabecera } from './Cabecera';
+
+2.5
+
+export function Fecha() {
+  const anioActual = new Date().getFullYear();
+  return<p>Estamos en el año anioActual</p>;
+}
+
+- La variable "anioActual" no esta entre llaves
+
+export function Fecha() {
+  const anioActual = new Date().getFullYear();
+  return<p>Estamos en el año {anioActual}</p>;
+}

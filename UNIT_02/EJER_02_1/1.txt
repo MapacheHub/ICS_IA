@@ -12,3 +12,5 @@ y esta definido en index.html
 * {count} Evalua y muestra en pantalla el valor actual de la variable de estado "count"
 * {setCount((count) => count + 1)} es una función que añade un +1 a la variable "count" cuando se le da click
 6.
+Es un elemento que permite agrupar varios hijos sin necesidad de añadir mas nodos.
+No, no genera nada
