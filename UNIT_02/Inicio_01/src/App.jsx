@@ -6,6 +6,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const ejemplo_10 = 10;
 
   return (
     <>
@@ -21,13 +22,24 @@ function App() {
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Veces Clickeadas: {count}
-        </button>
+        <div>
+          <button
+            type="button"
+            className="counter"
+            onClick={() => setCount((count) => count + 1)}
+            // src={ejemplo} width="170" height="179" alt=""
+            // src={ejemplo.png}
+          >
+            <img src="/src/assets/ejemplo.png" width="170" height="179"/>
+            
+          </button>
+          <p>Veces Clickeadas: {count}</p>
+          {count >= ejemplo_10 && (
+            <p style={{ color: 'green', fontWeight: 'bold', marginTop: '15px'}}>
+              Meeeee, conseguiste {ejemplo_10} clicks
+            </p>
+          )}
+        </div>
       </section>
 
       <div className="ticks"></div>
