@@ -1,0 +1,164 @@
+**Las respuestas a las preguntas escritas guárdalas en el archivo README.md**
+
+## Ejercicio 1 · Detectar errores
+
+Cada fragmento tiene **un error**. Explica cuál es, qué síntoma produce y escribe la corrección.
+
+**1.1**
+
+```jsx
+// Uso en App.jsx
+<Saludo nombreAlumno="Lucía" />
+
+// Saludo.jsx
+export function Saludo({ nombre }) {
+  return<p>¡Hola, {nombre}!</p>;
+}
+```
+
+**1.2**
+
+```jsx
+export function Interruptor() {
+  const [encendido, setEncendido] = useState(false);
+  return (
+    <button onClick={() => (encendido = !encendido)}>
+      {encendido ? 'Apagar' : 'Encender'}
+    </button>
+  );
+}
+```
+
+**1.3**
+
+```jsx
+export function Contador() {
+  const [valor, setValor] = useState(0);
+  return<button onClick={setValor(valor + 1)}>Pulsado {valor} veces</button>;
+}
+```
+
+**1.4**
+
+```jsx
+export function Contador() {
+  const [valor, setValor] = useState(0);
+  return<button onClick={() => setValor(valor + 1)}>{valor}</button>;
+}
+```
+
+El navegador muestra el error `useState is not defined`.
+
+**1.5**
+
+```jsx
+export function BotonEnviar({ onEnviar }) {
+  function manejarClic() {
+    onEnviar();
+  }
+  return<button onClick={manejarClic}>Enviar</button>;
+}
+
+// En App.jsx
+<BotonEnviar />
+```
+
+**1.6**
+
+```jsx
+export function Bandeja() {
+  const [mensajesNuevos, setMensajesNuevos] = useState(0);
+  return (
+    <div>
+      {mensajesNuevos &&<p>Tienes {mensajesNuevos} mensajes nuevos</p>}
+    </div>
+  );
+}
+```
+
+Cuando no hay mensajes, en la página aparece un `0` suelto.
+
+---
+
+## Ejercicio 2 · Componente `TarjetaModulo` (props)
+
+Trabajamos sobre el proyecto `EJER_02.1` del ejercicio anterior.  
+
+Crea un componente `TarjetaModulo` que muestre la información de un módulo formativo.
+
+**Props que recibe:**
+
+| Prop | Descripción | Valor por defecto |
+| --- | --- | --- |
+| `titulo` | Nombre del módulo | (obligatoria) |
+| `horas` | Horas semanales | `0` |
+| `curso` | `'1º'` o `'2º'` | `'1º'` |
+| `children` | Descripción del módulo | (ninguno) |
+
+**Requisitos:**
+
+1. Desestructura las props en la firma de la función y define ahí los valores por defecto.
+2. Muestra un emoji accesible según el curso: 📘 para `'1º'` y 📗 para `'2º'`.
+3. Si `horas` es mayor que 0, muestra «X horas semanales». Si no, no muestres nada.
+4. En `App`, usa el componente tres veces con datos distintos. En al menos una no pases `curso` ni `horas`, para comprobar los valores por defecto.
+
+```jsx
+<TarjetaModulo titulo="Desarrollo Web en Entorno Cliente" horas={7} curso="2º">
+  JavaScript, TypeScript y React en el navegador.
+</TarjetaModulo>
+```
+
+---
+
+## Ejercicio 3 · Componente `Contador` (estado y eventos)
+
+Crea un componente `Contador` que sirva, por ejemplo, para contar asistentes a una charla.
+
+**Props:** `etiqueta` (texto que acompaña al número) y `valorInicial` (por defecto `0`).
+
+**Requisitos:**
+
+1. Guarda el valor en un estado `valor`, inicializado con `valorInicial`.
+2. Añade tres botones: **+1**, **−1** y **Reiniciar**. Cada uno tiene su manejador: `manejarIncremento`, `manejarDecremento` y `manejarReinicio`. Usa al menos una vez la sintaxis de función flecha.
+3. El contador no puede bajar de 0. El botón **−1** debe estar desactivado (`disabled`) cuando el valor sea 0.
+4. **Reiniciar** vuelve al `valorInicial`, no necesariamente a 0.
+5. En `App`, coloca dos contadores independientes con etiquetas y valores iniciales distintos. Comprueba que cada uno tiene su propio estado.
+
+---
+
+## Ejercicio 4 · Componente `AvisoCookies` (eventos personalizados)
+
+Crea un aviso de cookies que se oculta al aceptar o rechazar y avisa al componente padre de la decisión.
+
+**Props:**
+
+| Prop | Descripción |
+| --- | --- |
+| `children` | Texto del aviso |
+| `onAceptar` | Evento opcional que se lanza al aceptar |
+| `onRechazar` | Evento opcional que se lanza al rechazar |
+
+**Requisitos:**
+
+1. Un estado `visible` controla si se muestra el aviso. Si es `false`, el componente devuelve `null`.
+2. Dos botones, **Aceptar** y **Rechazar**, con los manejadores `manejarAceptar` y `manejarRechazar`. Ambos ocultan el aviso y lanzan su evento.
+3. Los eventos son **opcionales**: el componente no puede fallar si el padre no los pasa.
+4. En `App`, muestra en consola «Cookies aceptadas» o «Cookies rechazadas» según el botón pulsado.
+
+**Ampliación:** en `App`, crea un estado `decision` (inicialmente `''`) y muestra bajo el aviso un párrafo «Has aceptado las cookies» o «Has rechazado las cookies», actualizado desde los manejadores de los eventos.
+
+---
+
+## Ejercicio 5 · React Developer Tools
+
+Con la aplicación en marcha y las React Developer Tools instaladas:
+
+1. En el panel **Components**, selecciona un `Contador`:
+    - Cambia la prop `etiqueta` desde el panel. ¿Se actualiza la página?
+    - Cambia el valor del estado a `10`. ¿Qué ocurre si después pulsas **Reiniciar**? Explica por qué.
+    - Activa la opción de analizar nombres de Hooks (icono de la varita). ¿Qué nombre aparece ahora junto a `State`?
+2. Selecciona una `PreguntaFrecuente` y alterna el estado `abierta` desde el panel.
+3. En el panel **Profiler**, activa «Registrar por qué se renderizó cada componente». Graba una sesión en la que pulses +1 tres veces en **uno** de los contadores.
+    - ¿Qué componentes se volvieron a renderizar?
+    - ¿Se renderizó también el otro contador? ¿Por qué?
+    - ¿Qué motivo indica el Profiler para el re-render?
