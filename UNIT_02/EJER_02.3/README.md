@@ -68,7 +68,7 @@ aprobado = 'sí';
 
 ## A2
 
-cfffsf
+cfffs
 
 
 ## A3
