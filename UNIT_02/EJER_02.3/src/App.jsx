@@ -1,0 +1,201 @@
+import { useState } from 'react'
+import heroImg from './assets/hero.png'
+import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import './App.css'
+
+import { Cabecera } from './componentes/Cabecera';
+import { Principal } from './componentes/Principal';
+import { Pie } from './componentes/Pie';
+import Captura from './Captura/Captura'
+import { Bandeja, BotonEnviar, Contador, Interruptor, Saludo } from './componentes/Saludo'
+import { TarjetaModulo } from './componentes/TarjetaModulo'
+import { Contador2 } from './componentes/Contador'
+import { AvisoCookies } from './componentes/AvisoCookies'
+
+
+
+Saludo
+export function Tarjeta() {
+  return (
+    // <h2>Desarrollo Web en Entorno Cliente</h2>
+    <p>Segundo curso de DAW</p>
+  );
+}
+
+// import { Pie } from 'Pie.jsx';
+
+// Archivo: src/App.jsx
+// import { Cabecera } from 'Cabecera.jsx';
+
+export function Fecha() {
+  const anioActual = new Date().getFullYear();
+  return<p>Estamos en el año {anioActual}</p>;
+}
+
+
+
+// function App() {
+//   return (
+//     <>
+//       <Cabecera />
+//       <Principal />
+//       <Pie />
+//     </>
+//   );
+// }
+
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  const [decision, setDecision] = useState('');
+  const CookiesÑamñam = () => {
+    console.log("Cookies aceptadas");
+    setDecision('aceptado');
+  }
+
+  const CookiesPuaj = () => {
+    console.log("Cookies rechazadas");
+    setDecision('rechazado');
+  }
+
+
+  return (
+    <>
+      <section id="center">
+        <div className="hero">
+          <img src={heroImg} className="base" width="170" height="179" alt="" />
+          <img src={reactLogo} className="framework" alt="React logo" />
+          <img src={viteLogo} className="vite" alt="Vite logo" />
+        </div>
+        <div>
+          <h1>Get started</h1>
+          <Saludo nombre="Lucía" />
+          <p>
+            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+          </p>
+        </div>
+        <Interruptor></Interruptor>
+        <Contador></Contador>
+        <BotonEnviar />
+        <Bandeja></Bandeja>
+        <TarjetaModulo titulo="Desarrollo Web en Entornos Cliente" horas={7} curso="2º">
+          JavaScript, TypeScript y React en el navegador
+        </TarjetaModulo>
+        <TarjetaModulo titulo="Desarrollo Web en Entornos Cliente"  curso="2º">
+          Solo las practicas laborales
+        </TarjetaModulo>
+        <TarjetaModulo titulo="Desarrollo Web en Entornos Cliente"  >
+          Texto plano
+        </TarjetaModulo>
+        <Contador2></Contador2>
+        <Contador2></Contador2>
+        <AvisoCookies
+          onAceptar={CookiesÑamñam}
+          onRechazar={CookiesPuaj}
+        >
+          Utilizamos cookies recien hechas y compradas en una pasteleria a 3 calles de nuestars oficinas
+        </AvisoCookies>
+        {decision === 'aceptado' && <p>Has aceptado las cookies</p>}
+        {decision === 'rechazado' && <p>Has rechazado las cookies</p>}
+        <button
+          type="button"
+          className="counter"
+          onClick={() => setCount((count) => count + 1)}
+        >
+          Count is {count}
+        </button>
+      </section>
+
+      <div className="ticks"></div>
+
+      <section id="next-steps">
+        <div id="docs">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#documentation-icon"></use>
+          </svg>
+          <h2>Documentation</h2>
+          <p>Your questions, answered</p>
+          <ul>
+            <li>
+              <a href="https://vite.dev/" target="_blank">
+                <img className="logo" src={viteLogo} alt="" />
+                Explore Vite
+              </a>
+            </li>
+            <li>
+              <a href="https://react.dev/" target="_blank">
+                <img className="button-icon" src={reactLogo} alt="" />
+                Learn more
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="social">
+          <svg className="icon" role="presentation" aria-hidden="true">
+            <use href="/icons.svg#social-icon"></use>
+          </svg>
+          <h2>Connect with us</h2>
+          <p>Join the Vite community</p>
+          <ul>
+            <li>
+              <a href="https://github.com/vitejs/vite" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#github-icon"></use>
+                </svg>
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://chat.vite.dev/" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#discord-icon"></use>
+                </svg>
+                Discord
+              </a>
+            </li>
+            <li>
+              <a href="https://x.com/vite_js" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#x-icon"></use>
+                </svg>
+                X.com
+              </a>
+            </li>
+            <li>
+              <a href="https://bsky.app/profile/vite.dev" target="_blank">
+                <svg
+                  className="button-icon"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <use href="/icons.svg#bluesky-icon"></use>
+                </svg>
+                Bluesky
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div className="ticks"></div>
+      <section id="spacer"></section>
+    </>
+  )
+}
+
+export default App;
+

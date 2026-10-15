@@ -1,0 +1,132 @@
+# EJER_02.3
+
+### Crea una carpeta en tu repositorio para este ejercicio
+
+**Las respuestas a las preguntas escritas guárdalas en el archivo README.md**
+
+**Preparación.**
+
+1. Bloques A y B: abre https://www.typescriptlang.org/play y borra el código de ejemplo.
+2. Bloque C: crea un proyecto con `npm create vite@latest practica-react -- --template react-ts`, entra en la carpeta y ejecuta `npm i`.
+
+**Normas.**
+
+- Escribe los nombres de variables, tipos y componentes nuevos en español.
+- Responde a las preguntas teóricas con tus palabras, en una o dos frases.
+
+## Bloque A. Tipos básicos (TypeScript Playground)
+
+**A1. ¿Qué tipo se infiere?** Sin ejecutar nada, escribe como comentario el tipo que TypeScript infiere para cada variable. Después compruébalo pasando el cursor por encima.
+
+```tsx
+let ciudad = 'Oviedo';
+let habitantes = 220000;
+let esCapital = true;
+const notas = [7.5, 8, 9.25];
+const fechaExamen = new Date(2026, 11, 15);
+let pendiente;
+```
+
+Pregunta: ¿por qué `pendiente` no tiene un tipo útil? Corrígelo con una anotación para que solo admita textos.
+
+**A2. Encuentra los errores.** El siguiente código tiene cuatro errores de tipo. Localízalos, explica cada uno en un comentario y corrígelos sin usar `any`.
+
+```tsx
+function calcularMedia(notas: number[]): number {
+  let suma = 0;
+  for (const nota of notas) {
+    suma += nota;
+  }
+  return suma / notas.length;
+}
+
+const media: string = calcularMedia([6, 7, 8]);
+calcularMedia([6, '7', 8]);
+
+const hoy = new Date();
+hoy.sumarDias(3);
+
+let aprobado = true;
+aprobado = 'sí';
+```
+
+**A3. Funciones con tipos.** Escribe una función `calcularPrecioFinal` que reciba un precio, un porcentaje de IVA y un descuento opcional (también en porcentaje) y devuelva el precio final. Anota los parámetros y el tipo de retorno.
+
+```tsx
+calcularPrecioFinal(100, 21);      // 121
+calcularPrecioFinal(100, 21, 10);  // 108.9
+```
+
+**A4. De any a unknown.** El siguiente código compila, pero falla en ejecución.
+
+```tsx
+const respuesta: any = JSON.parse('{"titulo": "Dune", "paginas": 412}');
+console.log(respuesta.autor.toUpperCase());
+```
+
+1. Explica por qué TypeScript no avisa del error.
+2. Cambia `any` por `unknown` y observa qué ocurre.
+3. Escribe una guarda de tipo `esLibro(valor: unknown): valor is Libro`, siendo `type Libro = { titulo: string; paginas: number }`. Úsala para mostrar el título solo cuando los datos sean válidos.
+
+**A5. Pregunta teórica.** Explica con tus palabras la diferencia entre `unknown` y `never`, y pon un ejemplo de función que devuelva `never`.
+
+## Bloque B. Crear tipos (TypeScript Playground)
+
+Todos los ejercicios de este bloque trabajan sobre una pequeña biblioteca escolar.
+
+**B1. Alias de tipo y propiedades opcionales.** Crea un alias `Libro` con estas propiedades:
+
+| Propiedad | Tipo | ¿Obligatoria? |
+| --- | --- | --- |
+| `isbn` | texto | Sí |
+| `titulo` | texto | Sí |
+| `autor` | texto | Sí |
+| `anioPublicacion` | número | Sí |
+| `paginas` | número | No |
+
+Declara dos libros, uno con `paginas` y otro sin ella. Después intenta asignar `libro.editorial = 'Anaya'` y explica el error.
+
+**B2. Tipos de unión.** Crea un tipo `EstadoPrestamo` que solo admita `'disponible'`, `'prestado'` o `'reservado'`. Añádelo como propiedad `estado` al tipo `Libro`. Comprueba que `estado: 'perdido'` da error.
+
+**B3. Tipos de función.** Crea un alias `Prestar` para una función que recibe el nombre de un alumno y no devuelve nada. Crea después un tipo `LibroPrestable` que sea la **intersección** de `Libro` con `{ prestar: Prestar }`. Declara un objeto de ese tipo cuya función `prestar` muestre en consola `"<titulo> prestado a <alumno>"`. No anotes el tipo del parámetro de la función: deja que TypeScript lo infiera.
+
+**B4. Interface frente a type.** Reescribe `Libro` como `interface`. Crea `interface LibroDigital extends Libro` con la propiedad `tamanoMB: number`.
+
+Responde: ¿podrías definir `EstadoPrestamo` con una `interface`? ¿Por qué?
+
+## Bloque C. React + TypeScript (programa)
+
+Vas a construir una pequeña aplicación de préstamos de la biblioteca. Crea cada componente en su propio archivo `.tsx` dentro de `src`.
+
+**C1. Componente TarjetaLibro (props).** Crea `TarjetaLibro.tsx`. Sus props deben estar tipadas con un alias `PropsTarjetaLibro`:
+
+| Prop | Tipo | ¿Obligatoria? | Valor por defecto |
+| --- | --- | --- | --- |
+| `titulo` | texto | Sí | — |
+| `autor` | texto | Sí | — |
+| `estado` | `'disponible' \| 'prestado' \| 'reservado'` | No | `'disponible'` |
+| `children` | `ReactNode` | No | — |
+| `alPrestar` | función sin parámetros que no devuelve nada | No | — |
+
+Requisitos:
+
+- Muestra el título, el autor y el estado.
+- Si `estado` es `'disponible'` y se ha pasado `alPrestar`, muestra un botón **Prestar** que la invoca. Usa el encadenamiento opcional `?.()`.
+- Importa `ReactNode` con la palabra clave `type`.
+
+En `App.tsx`, muestra tres tarjetas, una con cada estado. Después prueba a pasar `estado="perdido"` y a omitir `titulo`, y copia los mensajes de error en un comentario.
+
+**C2. Estado tipado (ListaPrestamos).** Crea `ListaPrestamos.tsx` con este tipo:
+
+```tsx
+type Prestamo = {
+  id: number;
+  titulo: string;
+  alumno: string;
+  devuelto: boolean;
+};
+```
+
+- Guarda la lista en un estado `prestamos`, inicializado con dos préstamos de ejemplo. ¿Qué tipo infiere TypeScript? ¿Sería el mismo si lo inicializaras con `[]`? Corrige este segundo caso con un argumento genérico.
+- Añade un estado `prestamoSeleccionado` que empiece en `null` y pueda contener un `Prestamo`. Indica su tipo con el argumento genérico de `useState`.
+- Cada préstamo tiene un botón **Marcar como devuelto** que cambia su propiedad `devuelto` a `true`.
