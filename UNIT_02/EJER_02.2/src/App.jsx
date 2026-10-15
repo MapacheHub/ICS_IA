@@ -8,12 +8,14 @@ import { Cabecera } from './componentes/Cabecera';
 import { Principal } from './componentes/Principal';
 import { Pie } from './componentes/Pie';
 import Captura from './Captura/Captura'
-import { Bandeja, BotonEnviar, Contador, Interruptor, Saludo } from './Saludo'
-import { TarjetaModulo } from './TarjetaModulo'
-import { Contador2 } from './Contador'
-import { AvisoCookies } from './AvisoCookies'
+import { Bandeja, BotonEnviar, Contador, Interruptor, Saludo } from './componentes/Saludo'
+import { TarjetaModulo } from './componentes/TarjetaModulo'
+import { Contador2 } from './componentes/Contador'
+import { AvisoCookies } from './componentes/AvisoCookies'
 
 
+
+Saludo
 export function Tarjeta() {
   return (
     // <h2>Desarrollo Web en Entorno Cliente</h2>
@@ -47,6 +49,18 @@ export function Fecha() {
 function App() {
   const [count, setCount] = useState(0)
 
+  const [decision, setDecision] = useState('');
+  const CookiesÑamñam = () => {
+    console.log("Cookies aceptadas");
+    setDecision('aceptado');
+  }
+
+  const CookiesPuaj = () => {
+    console.log("Cookies rechazadas");
+    setDecision('rechazado');
+  }
+
+
   return (
     <>
       <section id="center">
@@ -77,7 +91,14 @@ function App() {
         </TarjetaModulo>
         <Contador2></Contador2>
         <Contador2></Contador2>
-        <AvisoCookies></AvisoCookies>
+        <AvisoCookies
+          onAceptar={CookiesÑamñam}
+          onRechazar={CookiesPuaj}
+        >
+          Utilizamos cookies recien hechas y compradas en una pasteleria a 3 calles de nuestars oficinas
+        </AvisoCookies>
+        {decision === 'aceptado' && <p>Has aceptado las cookies</p>}
+        {decision === 'rechazado' && <p>Has rechazado las cookies</p>}
         <button
           type="button"
           className="counter"
