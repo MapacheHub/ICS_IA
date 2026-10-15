@@ -1,0 +1,11 @@
+1.
+    * Si se actualiza
+    * al reiniciar se pone a 0 porque asi lo pone el codigo de reiniciar
+    * 0
+
+2. No hay nada de "PreguntaFrecuente"
+
+3.
+    * Se renderizo App.jsx y el contador al que le di click 3 veces
+    * No, porque no le di click
+    * EL contador al que le di click
