@@ -58,7 +58,7 @@ calcularMedia([6, '7', 8]);
 const hoy = new Date();
 hoy.sumarDias(3);
 <!--.sumarDias() no existe en "Date"  -->
-<!--  -->
+<!-- Sustitullendo la funcion "sunarDias()" por "setDate()" -->
 
 let aprobado = true;
 aprobado = 'sí';
@@ -66,41 +66,186 @@ aprobado = 'sí';
 <!-- let aprobado = 'true'; -->
 
 
-## A2
-
-cfffs
-
-
 ## A3
 
-fdfdssf
+function calcularPrecioFinal(precio, iva, descuento){
+    let salida;
+    let precioF =precio + (precio * (iva / 100));
+    if (descuento == null) {
+        return console.log(precioF);
+    }
+    salida = precioF - (precioF * (descuento / 100));
+    return console.log(salida);
+    
+}
 
 
 ## A4
 
-dfssdfs
+<!-- const respuesta: any = JSON.parse('{"titulo": "Dune", "paginas": 412}');
+console.log(respuesta.autor.toUpperCase()); -->
 
+<!-- 1. Porque al poner un atributo "any" e intentar usar una propiedad solo de string ".toUpperCase" falla-->
+<!-- 2. Detecta un fallo en respuesta -->
+<!-- 3. -->
 
 ## A5
 
-dsfdfsf
-
+<!-- De simple forma podria diferenciar unknown y never en que unknown no se sabe que tipo es la variable, mientras que never defiene que nunca puede ser un tipo -->
 
 ## B1
 
-fsdfsfs
+type Libro = {
+    isbn: string
+    titulo: string
+    autor: string
+    anioPublicacion: number
+    paginas?: number
+}
+
+let libro1: Libro = {
+    isbn: "RhlT58T60",
+    titulo: "Don Quijote",
+    autor: "Quijote",
+    anioPublicacion: 1600,
+    paginas: 300
+}
+
+let libro2: Libro = {
+    isbn: "dfdHu7iii",
+    titulo: "El rey de Katoren",
+    autor: "Katoren",
+    anioPublicacion: 1947,
+}
+
+libro1.editorial = 'Anaya';
+
+<!-- Oviamente falla porque editorial no existe dento del tipo Libro -->
 
 
 ## B2
 
-sfsfsfs
+type EstadoPrestamo = 'disponible' | 'prestado' | 'reservado';
 
+type Libro = {
+    isbn: string
+    titulo: string
+    autor: string
+    anioPublicacion: number
+    paginas?: number
+    estado: EstadoPrestamo
+}
+
+let libro1: Libro = {
+    isbn: "RhlT58T60",
+    titulo: "Don Quijote",
+    autor: "Quijote",
+    anioPublicacion: 1600,
+    paginas: 300,
+    estado: 'disponible'
+}
+
+let libro2: Libro = {
+    isbn: "dfdHu7iii",
+    titulo: "El rey de Katoren",
+    autor: "Katoren",
+    anioPublicacion: 1947,
+    estado: 'perdido'
+}
+
+<!-- Obiamente da error porque 'perdido' no es una varible dentro de estado -->
 
 ## B3
 
-sdfsfsfs
+type EstadoPrestamo = 'disponible' | 'prestado' | 'reservado';
+
+type Prestar = (alumno: string) => void;
+type LibroPrestable = Libro & { prestar: Prestar};
+
+type Libro = {
+    isbn: string
+    titulo: string
+    autor: string
+    anioPublicacion: number
+    paginas?: number
+    estado?: EstadoPrestamo
+}
+
+let libro1: Libro = {
+    isbn: "RhlT58T60",
+    titulo: "Don Quijote",
+    autor: "Quijote",
+    anioPublicacion: 1600,
+    paginas: 300,
+    estado: 'disponible',
+}
+
+let libro2: Libro = {
+    isbn: "dfdHu7iii",
+    titulo: "El rey de Katoren",
+    autor: "Katoren",
+    anioPublicacion: 1947,
+}
+
+let libro3: LibroPrestable = {
+    isbn: "JO6yPt9lNH",
+    titulo: 'Buick 8',
+    autor: "Estefan Rey",
+    anioPublicacion: 1980,
+    paginas: 600,
+    estado: 'disponible',
+    prestar(alumno) {
+        console.log(`"${this.titulo}" prestado a ${alumno}`);
+    }
+}
+
+libro3.prestar('Jorge');
 
 
-## B4
+type EstadoPrestamo = 'disponible' | 'prestado' | 'reservado';
 
-sdfsfsfs
+type Prestar = (alumno: string) => void;
+type LibroPrestable = Libro & { prestar: Prestar};
+
+interface Libro {
+    isbn: string
+    titulo: string
+    autor: string
+    anioPublicacion: number
+    paginas?: number
+    estado?: EstadoPrestamo
+}
+
+interface LibroDigital extends Libro {tamanoMB: number};
+
+let libro1: Libro = {
+    isbn: "RhlT58T60",
+    titulo: "Don Quijote",
+    autor: "Quijote",
+    anioPublicacion: 1600,
+    paginas: 300,
+    estado: 'disponible',
+}
+
+let libro2: Libro = {
+    isbn: "dfdHu7iii",
+    titulo: "El rey de Katoren",
+    autor: "Katoren",
+    anioPublicacion: 1947,
+}
+
+let libro3: LibroPrestable = {
+    isbn: "JO6yPt9lNH",
+    titulo: 'Buick 8',
+    autor: "Estefan Rey",
+    anioPublicacion: 1980,
+    paginas: 600,
+    estado: 'disponible',
+    prestar(alumno) {
+        console.log(`"${this.titulo}" prestado a ${alumno}`);
+    }
+}
+
+libro3.prestar('Jorge');
+
+<!-- No, porque la interface no acepta tipos de unior como or, por lo que lo se podria hacer -->
