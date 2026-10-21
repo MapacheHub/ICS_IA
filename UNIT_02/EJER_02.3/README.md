@@ -85,8 +85,8 @@ function calcularPrecioFinal(precio, iva, descuento){
 <!-- const respuesta: any = JSON.parse('{"titulo": "Dune", "paginas": 412}');
 console.log(respuesta.autor.toUpperCase()); -->
 
-<!-- 1. Porque al poner un atributo "any" e intentar usar una propiedad solo de string ".toUpperCase" falla-->
-<!-- 2. Detecta un fallo en respuesta -->
+<!-- 1. Porque al poner un atributo "any" e intentar usar una propiedad inesistente no falla hasta que se ejecute el codigo-->
+<!-- 2. Ahora detecta el fallo -->
 <!-- 3. -->
 
 ## A5

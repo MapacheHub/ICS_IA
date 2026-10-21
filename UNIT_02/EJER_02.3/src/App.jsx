@@ -12,6 +12,8 @@ import { Bandeja, BotonEnviar, Contador, Interruptor, Saludo } from './component
 import { TarjetaModulo } from './componentes/TarjetaModulo'
 import { Contador2 } from './componentes/Contador'
 import { AvisoCookies } from './componentes/AvisoCookies'
+import { TarjetaLibro } from './TarjetaLibro'
+import { ListaPrestamos } from './ListaPrestamos';
 
 
 
@@ -49,18 +51,10 @@ export function Fecha() {
 function App() {
   const [count, setCount] = useState(0)
 
-  const [decision, setDecision] = useState('');
-  const CookiesÑamñam = () => {
-    console.log("Cookies aceptadas");
-    setDecision('aceptado');
-  }
-
-  const CookiesPuaj = () => {
-    console.log("Cookies rechazadas");
-    setDecision('rechazado');
-  }
-
-
+  const manejarPrestamo = () => {
+    alert('¡El libro ha sido prestado con éxito!');
+  };
+  
   return (
     <>
       <section id="center">
@@ -71,34 +65,50 @@ function App() {
         </div>
         <div>
           <h1>Get started</h1>
-          <Saludo nombre="Lucía" />
           <p>
             Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
           </p>
         </div>
-        <Interruptor></Interruptor>
-        <Contador></Contador>
-        <BotonEnviar />
-        <Bandeja></Bandeja>
-        <TarjetaModulo titulo="Desarrollo Web en Entornos Cliente" horas={7} curso="2º">
-          JavaScript, TypeScript y React en el navegador
-        </TarjetaModulo>
-        <TarjetaModulo titulo="Desarrollo Web en Entornos Cliente"  curso="2º">
-          Solo las practicas laborales
-        </TarjetaModulo>
-        <TarjetaModulo titulo="Desarrollo Web en Entornos Cliente"  >
-          Texto plano
-        </TarjetaModulo>
-        <Contador2></Contador2>
-        <Contador2></Contador2>
-        <AvisoCookies
-          onAceptar={CookiesÑamñam}
-          onRechazar={CookiesPuaj}
-        >
-          Utilizamos cookies recien hechas y compradas en una pasteleria a 3 calles de nuestars oficinas
-        </AvisoCookies>
-        {decision === 'aceptado' && <p>Has aceptado las cookies</p>}
-        {decision === 'rechazado' && <p>Has rechazado las cookies</p>}
+        <TarjetaLibro
+          titulo='Mobi Dick'
+          autor='Charls Dickens'
+          estado='prestado'
+        ></TarjetaLibro>
+
+        <TarjetaLibro
+          titulo='Carrie'
+          autor='Estefano Rey'
+          estado='reservado'
+        ></TarjetaLibro>
+
+        <TarjetaLibro
+          autor='Steven King'
+          estado='disponible'
+          alPrestar={manejarPrestamo}
+        ></TarjetaLibro>
+
+        {/* Firefox no puede establecer una conexión con el servidor en ws://localhost:5173/?token=zGbjGD7dfsvb. client:896:27
+
+            Firefox no puede establecer una conexión con el servidor en ws://localhost:5173/?token=zGbjGD7dfsvb. client:906:31
+
+            [vite] failed to connect to websocket.
+            your current setup:
+              (browser) localhost:5173/ <--[HTTP]--> localhost:5173/ (server)
+              (browser) localhost:5173/ <--[WebSocket (failing)]--> localhost:5173/ (server)
+            Check out your Vite / network configuration and https://vite.dev/config/server-options.html#server-hmr . <anonymous code>:1:147461
+
+            Error en el mapeo fuente: Error: JSON.parse: unexpected character at line 1 column 1 of the JSON data
+            Stack in the worker:parseSourceMapInput@resource://devtools/client/shared/vendor/source-map/lib/util.js:163:15
+            _factory@resource://devtools/client/shared/vendor/source-map/lib/source-map-consumer.js:1069:22
+            SourceMapConsumer@resource://devtools/client/shared/vendor/source-map/lib/source-map-consumer.js:26:12
+            _fetch@resource://devtools/client/shared/source-map-loader/utils/fetchSourceMap.js:83:19
+
+            URL del recurso: http://localhost:5173/%3Canonymous%20code%3E
+            URL del mapa fuente: installHook.js.map 
+        */}
+        
+        <ListaPrestamos />
+
         <button
           type="button"
           className="counter"
