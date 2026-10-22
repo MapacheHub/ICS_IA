@@ -1,0 +1,54 @@
+# EJER_Repaso examen
+
+## Cómo usar esta hoja
+
+Realizarlos todos con React y TypeScript, para practicar estado, eventos, formularios básicos.
+
+- Crea un proyecto con Vite (`npm create vite@latest`, plantilla React + TypeScript) y un componente por ejercicio.
+- Usa nombres en español para variables, funciones, props e interfaces.
+- Tipa siempre el estado (`useState<tipo>`), las props y los eventos. No se admite `any`.
+- Nunca mutes el estado: copia con spread, `map` o `filter`.
+- Los datos que se pueden calcular no se guardan en estado.
+
+### Ejercicio 1. Interruptor de luz
+
+Crea el componente `InterruptorLuz` con un botón que alterna entre luz encendida y apagada.
+
+- Estado: `encendida` de tipo `boolean`.
+- El texto del botón cambia: “Encender” o “Apagar”.
+- Un recuadro cambia de color de fondo (amarillo o gris oscuro) según el estado.
+- Pista: `setEncendida(!encendida)`.
+
+```tsx
+const [encendida, setEncendida] = useState<boolean>(false);
+```
+
+### Ejercicio 2. Contador con límites
+
+Crea `ContadorLimitado` con tres botones: sumar, restar y reiniciar.
+
+- El valor está siempre entre 0 y 10.
+- El botón de sumar se desactiva (`disabled`) al llegar a 10 y el de restar al llegar a 0.
+- Sumar y restar usan la forma funcional: `setCuenta(anterior => anterior + 1)`.
+- Extra: muestra “Máximo alcanzado” cuando valga 10. Ese mensaje es un dato derivado, no un estado.
+
+### Ejercicio 3. Lista de la compra
+
+Crea `ListaCompra` para gestionar productos.
+
+- Define `interface Producto { id: number; nombre: string; comprado: boolean }`.
+- Un campo de texto y un botón “Añadir” (no se añaden textos vacíos).
+- Cada producto tiene una casilla para marcarlo como comprado y un botón “Quitar”.
+- Los comprados se muestran tachados.
+- Muestra “Pendientes: N” calculado en el renderizado a partir de la lista.
+- Prohibido `push`, `splice` y asignar propiedades: usa `[...lista, nuevo]`, `map` y `filter`.
+
+### Ejercicio 4. Buscador de películas
+
+Crea `BuscadorPeliculas` con un array fijo de al menos 8 películas (`titulo`, `anio`, `genero`).
+
+- Estado: solo `busqueda` (texto) y `genero` (un `select` con “Todos” y los géneros).
+- La lista filtrada y el contador “N resultados” son datos derivados.
+- Al pulsar `Escape` en el campo de búsqueda, se borra el texto (`React.KeyboardEvent<HTMLInputElement>`).
+- Si no hay resultados, muestra “Sin resultados”.
+- Extra: un botón “Limpiar filtros”.
