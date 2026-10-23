@@ -27,6 +27,7 @@ function App() {
         <InterruptorLuz />
         <ContadorLimitado />
         <ListaCompra />
+        
         <button
           type="button"
           className="counter"

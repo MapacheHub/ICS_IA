@@ -25,20 +25,20 @@ export const ListaCompra = () => {
         comprado: false,
         };
 
-        setLista([...lista, newProducto]);                                                          //  
-        setNewNombre("");
+        setLista([...lista, newProducto]);                                                          //  Desfragmenta la lista (...lista) y añade el nuevo producto (newProducto)
+        setNewNombre("");                                                                           //  Vacia la variable para otro producto
   };
 
-  const manejarAlternarComprado = (id: number): void => {
-    setLista(
-      lista.map((producto) =>
+  const manejarAlternarComprado = (id: number): void => {                                       //  Esto es para manejar el check de comprado
+    setLista(                                                                                       
+      lista.map((producto) =>                                                                       //  vale, aqui editamos y cojemos el id, si el id coincide, cambiamos el valor de "comprado", si no devulve el producto sin editar
         producto.id === id ? { ...producto, comprado: !producto.comprado } : producto
       )
     );
   };
 
-  const manejarQuitar = (id: number): void => {
-    setLista(lista.filter((producto) => producto.id !== id));
+  const manejarQuitar = (id: number): void => {                                                 //  Esto es manejar quitar un producto
+    setLista(lista.filter((producto) => producto.id !== id));                                       //  Aqui filtramos producto por id diferente al que le emos dado
   };
 
     return (
