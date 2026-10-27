@@ -7,8 +7,8 @@ import type { Estado } from "./tipos";
 export function obtenerEstado(votos: number, maximo: number): Estado {
     if (votos === maximo) {
         return 'lider';
-    } else if (votos < maximo) {
-        return 'algunos';
+    } else if (votos === 0) {
+        return 'ninguno';
     }
-    return "ninguno"
+    return 'algunos';
 };

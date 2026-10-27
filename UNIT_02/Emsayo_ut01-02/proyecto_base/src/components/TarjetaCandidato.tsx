@@ -5,37 +5,37 @@ import type { Candidato, Estado } from "../tipos";
 
 
 
-export type props = {
-  candicato: Candidato,
+type TarjetaCandidatoProps = {
+  candidato: Candidato,
   estado: Estado,
   textBoton?: String,
-  alVotar: (id: Number) => void,
+  alVotar: (id: number) => void,
 
 }
 
 export function TarjetaCandidato({
-  candicato,
+  candidato,
   estado,
   textBoton = 'votar',
   alVotar,
-}: props) {
+}: TarjetaCandidatoProps) {
 
   return (
     <article className="tarjeta">
       <h3>
-        {candicato.nombre} <span className="numero">{candicato.numeroLista}</span>
+        {candidato.nombre} <span className="numero">{candidato.numeroLista}</span>
       </h3>
       <p>
-        Votos: <strong>{candicato.votos}</strong>
+        Votos: <strong>{candidato.votos}</strong>
 
         {estado === 'lider' && <p>👑 Va en cabeza</p>}
         {estado === 'ninguno'&&<p>Todavia sin votos</p>}
 
       </p>
 
-      {candicato.lema != null && <p>{candicato.lema}</p>}
+      {candidato.lema != null && <p>{candidato.lema}</p>}
       
-      <button onClick={() => alVotar(candicato.id)}>{textBoton}</button>
+      <button onClick={() => alVotar(candidato.id)}>{textBoton}</button>
     </article>
   );
 }

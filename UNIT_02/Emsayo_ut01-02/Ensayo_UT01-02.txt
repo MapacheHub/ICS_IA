@@ -1,0 +1,94 @@
+# Ensayo_UT01-02
+
+## Elección de delegado/a
+
+Tu clase va a elegir delegado o delegada. Te han dejado una aplicación a medias: muestra a cada candidato en una **tarjeta**, con un botón para **votar**, y un formulario para **presentar una candidatura nueva**.
+La aplicación está formada por tres componentes:
+
+```
+App                          ← guarda la lista de candidatos (estado) y calcula los totales
+ ├── TarjetaCandidato  (×N)  ← una tarjeta por candidato: recibe datos y avisa cuando se vota
+ └── FormularioCandidato     ← recoge una candidatura nueva y avisa a App
+```
+
+Recuerda cómo viajan los datos: **hacia abajo, por props** (de `App` a las tarjetas) y **hacia arriba, mediante funciones** que reciben como props (`alVotar`, `alAnadir`).
+
+## Cómo empezar
+
+- Descomprime el proyecto base, ábrelo en Visual Studio Code y ejecuta `npm install` y `npm run dev`.
+- No hace falta tocar `src/index.css` ni `src/datos.ts`.
+- Los tipos se importan con `type`: `import type { Candidato } from "./tipos"` o `import { useState, type FormEvent } from "react"`.
+
+---
+
+### Apartado 1 · El modelo
+
+En `src/tipos.ts`, crea y **exporta**:
+
+- `Candidato`: un objeto con `id` (número), `nombre` (texto), `numeroLista` (número), `votos` (número) y `lema` (texto, **opcional**).
+- `Estado`: un tipo que solo admita estos tres valores de texto: `"ninguno"`, `"algunos"` y `"lider"`.
+
+En `src/utilidades.ts`, crea y **exporta** la función `obtenerEstado`. Recibe los votos de un candidato y los votos del candidato que más tiene (`maximo`), y devuelve su `Estado`. Tanto los parámetros como el retorno deben llevar tipo:
+
+| Situación | Devuelve |
+| --- | --- |
+| El candidato no tiene ningún voto | `"ninguno"` |
+| Tiene votos y son iguales a `maximo` | `"lider"` |
+| Tiene votos pero menos que `maximo` | `"algunos"` |
+
+> **Pruébalo** (`obtenerEstado(votos, maximo)`):
+(0, 5) → ninguno · (0, 0) → ninguno · (5, 5) → lider · (3, 5) → algunos · (1, 1) → lider
+> 
+
+### Apartado 2 · La tarjeta
+
+El componente de `src/components/TarjetaCandidato.tsx` muestra datos fijos y su botón no hace nada. Hazlo configurable:
+
+- Define el tipo de sus **props**: `candidato` (un `Candidato`), `estado` (un `Estado`), `textoBoton` (texto, **opcional**) y `alVotar` (una función que recibe el `id` del candidato, un número, y no devuelve nada).
+- Recíbelas **desestructuradas** y haz que `textoBoton` valga `"Votar"` si no se indica.
+- Muestra el nombre, el número de lista y los votos del candidato.
+- Si el `estado` es `"lider"`, muestra el mensaje «👑 Va en cabeza». Si es `"ninguno"`, muestra «Todavía sin votos».
+- Muestra el lema del candidato **solo si lo tiene**.
+- Haz que el botón muestre `textoBoton` y, al pulsarlo, llame a `alVotar` con el `id` del candidato.
+- **Opcional, no puntúa:** la clase `tarjeta tarjeta--X` (donde `X` es el estado) da color a la tarjeta.
+
+> **Pista:** para pasar un dato a la función del evento hace falta una función flecha: `onClick={() => alVotar(candidato.id)}`. Si escribes `onClick={alVotar(candidato.id)}`, la función se ejecuta al dibujar la tarjeta, no al pulsar.
+> 
+
+### Apartado 3 · La lista
+
+En `src/App.tsx`:
+
+- Crea el estado `candidatos` con `useState`, inicializado con `candidatosIniciales` (de `src/datos.ts`). Tiene que ser una lista de `Candidato`.
+- Calcula `totalVotos` (suma de los votos de todos los candidatos) y `maximo` (el mayor número de votos; si no hay candidatos, 0). **No** los guardes en el estado: calcúlalos en el cuerpo del componente. Muestra «Votos emitidos: X».
+- Muestra una `TarjetaCandidato` por cada candidato, con su `key`. El `estado` de cada tarjeta se obtiene con `obtenerEstado(votos, maximo)`. Por ahora, pásale a `alVotar` una función vacía.
+- Si no hay candidatos, muestra «Todavía no hay candidaturas.» en lugar de la lista (opcional: `<p className="vacio">`). Para probarlo, cambia temporalmente `candidatosIniciales` por `[]`.
+
+> **Pista:** `Math.max(0, ...lista.map((c) => c.votos))` calcula el mayor valor y devuelve 0 si la lista está vacía. Una `key` también se puede poner en un componente: `<TarjetaCandidato key={…} … />`.
+> 
+
+### Apartado 4 · El voto
+
+En `src/App.tsx`, escribe la función `votar` y pásala a las tarjetas como `alVotar`:
+
+- Recibe el `id` del candidato (con su tipo).
+- Actualiza la lista de candidatos para que **solo ese candidato** tenga un voto más, **sin modificar** el estado ni los objetos existentes: crea copias.
+- Como el valor nuevo depende del anterior, usa la forma funcional de `setCandidatos`.
+
+> **Pista:** `lista.map((x) => x.id === id ? { ...x, votos: x.votos + 1 } : x)` devuelve una lista nueva en la que solo cambia un elemento.
+> 
+
+### Apartado 5 · La candidatura
+
+El componente de `src/components/FormularioCandidato.tsx` es un formulario estático. Hazlo funcionar:
+
+- **Props.** Recibe `alAnadir`: una función que recibe un `Candidato` y no devuelve nada. Defínela con su tipo.
+- **Campos controlados.** Crea un estado para cada campo (nombre, número de lista y lema; el número puede guardarse como texto, tal como lo entrega el `<input>`) y enlázalos con `value` y `onChange`.
+- **Validación.** El formulario es válido si el nombre no está vacío (ni solo espacios) y el número de lista está relleno y entre 1 y 30. El lema es **opcional**. Calcula si es válido **sin crear otro estado** y deshabilita el botón mientras no lo sea.
+- **Envío.** Escribe `manejarEnvio` para el `onSubmit`, con el **tipo del evento**. Debe evitar la recarga de la página, crear un `Candidato` (`id` con `Date.now()`, número de lista convertido a número, `votos` a 0 y el lema solo si se ha escrito), llamar a `alAnadir` y **vaciar los tres campos**.
+- **Conexión con App.** En `App`, escribe una función que añada el candidato recibido **sin modificar el array original** y muestra `<FormularioCandidato alAnadir={…} />` debajo de las tarjetas. El formulario se ve siempre, haya candidatos o no.
+
+> **Pista:** el valor de un `<input>` siempre es texto. Para tipar el envío: `function manejarEnvio(evento: FormEvent<HTMLFormElement>) { evento.preventDefault(); … }`.
+> 
+
+---
