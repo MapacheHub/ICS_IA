@@ -1,0 +1,81 @@
+# EJER_03.1
+
+# Listas y componentes en React con TypeScript
+
+**Normas**
+
+- Proyecto creado con Vite
+- Código en **TypeScript** (archivos `.tsx`).
+- El estado **nunca se muta**: no se permiten `push`, `splice`, `sort` ni `reverse` sobre el estado o las `props`.
+- Antes de entregar, `npm run build` y `npm run lint` deben terminar **sin errores ni avisos**.
+
+---
+
+## Ejercicio 1: Dashboard de tareas interactivo
+
+**Objetivo:** crear una aplicación de una sola página para gestionar una lista de tareas. El reto principal no es solo mostrar la lista, sino implementar un filtrado dinámico y un resumen que reaccionen a las acciones del usuario, calculando los datos derivados en lugar de guardarlos.
+
+### Datos de partida
+
+La aplicación parte de un array definido en el código. Estos son los tipos y los datos:
+
+```tsx
+type Prioridad = "alta" | "media" | "baja";
+type FiltroPrioridad = Prioridad | "todas";
+
+interface Tarea {
+  id: number;
+  texto: string;
+  completada: boolean;
+  prioridad: Prioridad;
+}
+
+const tareasIniciales: Tarea[] = [
+  { id: 1, texto: "Aprender sobre renderizado de listas en React", completada: true, prioridad: "alta" },
+  { id: 2, texto: "Implementar el filtrado de tareas", completada: false, prioridad: "alta" },
+  { id: 3, texto: "Entender cómo se eleva el estado", completada: false, prioridad: "media" },
+  { id: 4, texto: "Estilizar los componentes con Bootstrap", completada: true, prioridad: "baja" },
+  { id: 5, texto: "Crear el componente de resumen condicional", completada: false, prioridad: "media" },
+  { id: 6, texto: "Desplegar la aplicación en Netlify", completada: false, prioridad: "baja" },
+];
+```
+
+### Requisitos funcionales
+
+1. **Componente principal (`App.tsx`)**
+    - Gestiona **solo dos estados**: la lista de tareas y el filtro de prioridad seleccionado (`FiltroPrioridad`).
+    - La lista de tareas visibles **no es un estado**: se calcula en cada renderizado a partir de los dos anteriores.
+    - Define la función que cambia el estado `completada` de una tarea y se la pasa a los componentes hijos mediante `props`.
+    - Renderiza `Filtros`, `ResumenTareas` y `ListaTareas`.
+2. **Lista (`ListaTareas.tsx` y `Tarea.tsx`)**
+    - `ListaTareas` recibe las tareas visibles y las recorre con `.map()`.
+    - Cada tarea es un componente `Tarea`. Cada elemento de la lista debe tener una `key` única y estable.
+    - Tipa las `props` de cada componente con una `interface` (por ejemplo, `PropsTarea`).
+3. **Renderizado condicional y estilos (`Tarea.tsx`)**
+    - Una tarea completada aparece **tachada** y con un fondo más tenue.
+    - Un indicador de **prioridad** con color: rojo para `alta`, amarillo para `media` y verde para `baja`. El color no puede ser la única señal: muestra también el texto de la prioridad.
+    
+    Un ejemplo de aplicación de distintas clases CSS dependiendo de para una etiqueta `<li>`podría ser
+    
+     `<li className={tarea--${tarea.prioridad}}>`
+    
+    siendo el CSS:
+    
+    `.tarea--alta  { border-left-color: #e53935; } /* rojo */
+    .tarea--media { border-left-color: #fbc02d; } /* amarillo */
+    .tarea--baja  { border-left-color: #43a047; } /* verde */`
+    
+    - Al hacer clic en una tarea, su estado `completada` cambia (`true` ↔︎ `false`). Debe poder hacerse también con el teclado: usa un `<button>` o un `<input type="checkbox">` en lugar de un `<li onClick>`.
+4. **Filtros (`Filtros.tsx`)**
+    - Cuatro botones: *Todas*, *Alta*, *Media* y *Baja*. Genera los botones recorriendo un array tipado, no los escribas uno a uno.
+    - El botón del filtro activo se muestra resaltado.
+    - Al pulsar un botón se actualiza el filtro en `App`; con *Todas* se muestran todas las tareas.
+5. **Resumen (`ResumenTareas.tsx`)**
+    - Se calcula sobre las tareas **visibles** (después de filtrar). Recibe, por ejemplo, las tareas visibles y el total de tareas.
+    - Se evalúan estos casos **en este orden**:
+        1. Sin tareas visibles: `"No hay tareas para este filtro."`
+        2. Todas las tareas visibles están completadas: `"¡Felicidades! Has completado todas las tareas de esta sección."`
+        3. En cualquier otro caso: `"Mostrando X de Y tareas."`, donde X es el número de tareas visibles e Y el total de tareas.
+    - El orden importa: `[].every(...)` devuelve `true` con una lista vacía, y el mensaje de felicitación no debe aparecer cuando no hay tareas.
+6. **Documentación**
+    - Crea un `README.md` con una frase por componente explicando su responsabilidad.

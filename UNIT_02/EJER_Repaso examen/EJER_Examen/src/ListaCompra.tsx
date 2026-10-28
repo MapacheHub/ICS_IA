@@ -58,12 +58,12 @@ export const ListaCompra = () => {
                {lista.map((producto) => (
                     <li key={producto.id} style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
                         <input
-                        type="checkbox"
-                        checked={producto.comprado}
-                        onChange={() => manejarAlternarComprado(producto.id)}
+                            type="checkbox"
+                            checked={producto.comprado}
+                            onChange={() => manejarAlternarComprado(producto.id)}
                         />
                         <span style={{ textDecoration: producto.comprado ? "line-through" : "none" }}>
-                        {producto.nombre}
+                            {producto.nombre}   
                         </span>
                         <button 
                             onClick={() => manejarQuitar(producto.id)}
