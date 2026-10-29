@@ -30,3 +30,15 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+# Dashboard de Tareas Interactiva - Documentación de Componentes
+
+Este proyecto gestiona una lista de tareas dinámica utilizando React, TypeScript y estilos asistidos por Bootstrap.
+
+## Responsabilidad de los Componentes
+
+* **App.tsx**: Centraliza y gestiona los dos únicos estados de la aplicación (lista de tareas y filtro activo) y calcula en tiempo de ejecución los datos derivados de las tareas visibles.
+* **Filtros.tsx**: Renderiza iterativamente mediante un array tipado los botones de filtrado y comunica a `App` el cambio del filtro activo seleccionado.
+* **ResumenTareas.tsx**: Muestra mensajes informativos condicionales evaluados estrictamente en orden basándose en el volumen y el estado de las tareas visibles.
+* **ListaTareas.tsx**: Procesa el subconjunto de tareas filtradas mapeándolas individualmente en componentes atómicos mediante claves únicas y estables.
+* **Tarea.tsx**: Renderiza de forma accesible e interactiva cada tarea, aplicando clases visuales dinámicas según su prioridad y estado de compleción mediante eventos nativos de teclado/ratón.
