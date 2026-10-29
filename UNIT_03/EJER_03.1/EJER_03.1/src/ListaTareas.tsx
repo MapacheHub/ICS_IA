@@ -1,18 +1,18 @@
-import { TareaItem, type Tarea } from "./tarea";
+import { TareaItem, type Tarea } from "./Tarea";
 
 interface ListaTareasProps {
     tareas: Tarea[],
-    onToggleTarea: (id: number) => void,
+    onToggle: (id: number) => void,
 }
 
-export function ListaTareas({ tareas, onToggleTarea }: ListaTareasProps) {
+export function ListaTareas({ tareas, onToggle }: ListaTareasProps) {
     return (
         <ul className="list-group">
             {tareas.map((tarea) => (
                 <TareaItem
                     key={tarea.id}
                     tarea={tarea}
-                    onToggle={onToggleTarea}
+                    onToggle={onToggle}
                 />
             ))}
         </ul>

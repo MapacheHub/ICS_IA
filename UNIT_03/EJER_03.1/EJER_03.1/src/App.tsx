@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './App.css'
-import { tareasIniciales, type FiltroPrioridad, type Tarea } from './tarea'
+
+import { Filtros } from './Filtros';
+import { ListaTareas } from './ListaTareas';
+import { ResumenTareas } from './ResumenTareas';
+import { tareasIniciales, type FiltroPrioridad, type Tarea } from './Tarea';
 
 function App() {
 
@@ -19,9 +23,11 @@ function App() {
 
   return (
       <div>
-        {/* <Filtros />
-        <ResumenTareas />
-        <ListaTareas /> */}
+        <Filtros filtroActivo={filtro} onCambiarFiltro={setFiltro} />
+
+        <ResumenTareas tareasVisibles={tareasVisibles} totalTareas={tareas.length} />
+
+        <ListaTareas tareas={tareasVisibles} onToggle={estado} />
       </div>
   )
 }
