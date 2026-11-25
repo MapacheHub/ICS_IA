@@ -1,0 +1,270 @@
+# Ejercicios : estado, efectos y refs
+
+**Cómo trabajar**
+
+- Cada ejercicio se hace en un componente propio, dentro de un proyecto Vite con React y TypeScript.
+- Antes de entregar, ejecuta `npm run build` y `npm run lint`: deben terminar sin errores ni avisos.
+- **Guarda las respuestas a las preguntas en el archivo README.md del proyecto**
+
+| Ejercicio | Tema |
+| --- | --- |
+| A1 · Predice y comprueba | `useState`: el estado como «foto» |
+| A2 · Carrito con `useReducer` | `useReducer` y acciones tipadas |
+| B1 · Reloj con limpieza | `useEffect` con temporizador |
+| B2 · Estado persistente | `useEffect`, `localStorage`, `unknown` |
+| B3 · Detalle sin carreras | Condiciones de carrera, `AbortController` |
+| B4 · ¿Necesito un efecto? | Cuándo **no** usar `useEffect` |
+| C1 · Foco inteligente | `useRef` con el DOM |
+| C2 · Cronómetro con vueltas | `useRef` para un valor mutable |
+| D · Cuaderno de notas del grupo | Proyecto integrador |
+
+---
+
+## A1 · Predice y comprueba
+
+**Practicas:** el estado como «foto» del renderizado (UT 02.4). **Repasas:** manejadores y renderizado.
+
+```tsx
+function Contador() {
+  const [cuenta, setCuenta] = useState(0);
+
+  function manejarSumarTres() {
+    setCuenta(cuenta + 1);
+    setCuenta(cuenta + 1);
+    setCuenta(cuenta + 1);
+    console.log("Consola:", cuenta);
+  }
+
+  function manejarDuplicar() {
+    setCuenta(cuenta + 1);
+    setCuenta((anterior) => anterior * 2);
+  }
+
+  return (
+    <section>
+      <h3>{cuenta}</h3>
+      <button onClick={manejarSumarTres}>Sumar 3</button>
+      <button onClick={manejarDuplicar}>Duplicar</button>
+    </section>
+  );
+}
+```
+
+1. Antes de ejecutar nada, escribe en papel qué saldrá por la consola y qué mostrará el `<h3>` tras pulsar una vez **Sumar 3**, partiendo de 0.
+2. Partiendo de 0, pulsa **Duplicar** una vez y otra vez más. ¿Qué valor muestra tras cada clic? Predice los dos antes de probar.
+3. Corrige `manejarSumarTres` para que sume de verdad 3 y explica en una frase por qué el original no lo hacía.
+
+**Comprueba:** ejecuta el componente y compara con tu predicción. Si alguna no coincide, vuelve a leer qué valor tiene `cuenta` dentro de un mismo manejador.
+
+---
+
+## A2 · Carrito con `useReducer`
+
+**Practicas:** `useReducer` y acciones tipadas. **Repasas:** uniones discriminadas, `interface`, `map`, `filter` y `reduce` (UT 01 y UT 02.3).
+
+Partiendo de estos tipos, crea `Carrito` con un catálogo de cuatro productos y un reductor puro:
+
+```tsx
+interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+}
+
+interface LineaCarrito {
+  producto: Producto;
+  cantidad: number;
+}
+
+type Accion =
+  | { tipo: "anadir"; producto: Producto }
+  | { tipo: "quitar"; idProducto: number }
+  | { tipo: "cambiarCantidad"; idProducto: number; cantidad: number }
+  | { tipo: "vaciar" };
+```
+
+- `anadir`: si el producto ya está en el carrito suma 1 a su cantidad; si no, crea la línea.
+- `cambiarCantidad`: si la nueva cantidad es 0 o menor, elimina la línea.
+- El número de artículos y el total son **datos derivados**: se calculan con `reduce` al renderizar, no se guardan.
+- Los precios se muestran con `new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" })`.
+- El `switch` no lleva `default`.
+
+**Comprueba:** añade una acción nueva a la unión, por ejemplo `{ tipo: "aplicarDescuento"; porcentaje: number }`, sin tratarla en el reductor. TypeScript debe avisar del error TS2366 (la función no devuelve un valor en todos los casos). Después trátala o bórrala.
+
+**Amplía:** una acción `deshacer`. Para ello el estado pasa a ser `{ lineas: LineaCarrito[]; historial: LineaCarrito[][] }`. Compara con el ejemplo 02 del tema.
+
+---
+
+## B1 · Reloj con limpieza
+
+**Practicas:** efectos con temporizador y su limpieza. **Repasas:** el tipo `Date` y props tipadas.
+
+Crea `Reloj`, con la prop opcional `zonaHoraria?: string` (por ejemplo, `"Europe/Madrid"` o `"America/Mexico_City"`). Muestra la hora actual con `toLocaleTimeString("es-ES", { timeZone: zonaHoraria })` y la actualiza cada segundo con `setInterval`.
+
+- El estado inicial se calcula con inicialización perezosa: `useState(() => new Date())`.
+- La limpieza llama a `clearInterval`.
+- Muestra dos relojes con zonas horarias distintas.
+
+**Comprueba:** escribe un `console.log("tic")` dentro del temporizador y añade una casilla que oculte el reloj. Con la limpieza, al ocultarlo dejan de salir mensajes. Quita la limpieza y repite: verás dos mensajes por segundo y, al ocultarlo, siguen saliendo. Explica por qué (pista: `StrictMode`).
+
+---
+
+## B2 · ¿Necesito un efecto?
+
+---
+
+**Practicas:** reconocer efectos innecesarios. **Repasas:** datos derivados, `key` y manejadores de eventos (UT 02.4).
+
+**Parte 1.** Cada fragmento usa un efecto que sobra. Explica por qué y reescríbelo sin él.
+
+```tsx
+// Fragmento 1
+function Resumen({ nombre, apellidos }: PropsResumen) {
+  const [nombreCompleto, setNombreCompleto] = useState("");
+
+  useEffect(() => {
+    setNombreCompleto(`${nombre} ${apellidos}`);
+  }, [nombre, apellidos]);
+
+  return <p>{nombreCompleto}</p>;
+}
+```
+
+```tsx
+// Fragmento 2
+function Formulario() {
+  const [nombre, setNombre] = useState("");
+  const [enviado, setEnviado] = useState(false);
+
+  useEffect(() => {
+    if (enviado) {
+      guardarEnServidor({ nombre });
+    }
+  }, [enviado]);
+
+  function manejarEnvio(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setEnviado(true);
+  }
+
+  return (
+    <form onSubmit={manejarEnvio}>
+      <input value={nombre} onChange={(e) => setNombre(e.target.value)} />
+    </form>
+  );
+}
+```
+
+```tsx
+// Fragmento 3: el comentario debe vaciarse al cambiar de alumno
+function FichaAlumno({ idAlumno }: PropsFicha) {
+  const [comentario, setComentario] = useState("");
+
+  useEffect(() => {
+    setComentario("");
+  }, [idAlumno]);
+
+  return (
+    <textarea
+      value={comentario}
+      onChange={(e) => setComentario(e.target.value)}
+    />
+  );
+}
+```
+
+Pega los tres en el proyecto y ejecuta `npm run lint`: comenta qué avisos aparecen y qué dicen. Pista para el fragmento 3: lo resuelve la prop `key`.
+
+---
+
+## C1 · Foco inteligente
+
+**Practicas:** `useRef` para acceder al DOM. **Repasas:** formulario controlado, `preventDefault` y validación sencilla.
+
+Crea `FormularioAcceso`, con los campos **correo** y **contraseña** (ambos controlados) y un botón **Entrar**.
+
+- Al mostrarse, el foco está en el campo de correo (`useRef<HTMLInputElement>(null)` y un efecto).
+- Al enviar, si el correo no contiene `@`, se muestra un error y el foco va al campo de correo. Si el correo es correcto pero la contraseña tiene menos de 8 caracteres, el foco va a la contraseña.
+- Los mensajes de error se calculan a partir de los valores, sin un estado propio para cada uno.
+- Un botón **Vaciar** limpia los dos campos y devuelve el foco al primero.
+
+**Comprueba:** haz que el formulario falle de las dos maneras y verifica dónde aparece el cursor.
+
+**Responde:** ¿por qué usamos `?.` en `campoCorreo.current?.focus()`?
+
+**Amplía:** un botón **Mostrar contraseña** que cambie el `type` del campo entre `password` y `text` sin que el campo pierda el foco.
+
+---
+
+## C2 · Cronómetro con vueltas
+
+**Practicas:** `useRef` para guardar el id de un temporizador. **Repasas:** arrays inmutables y formato de números.
+
+Crea `Cronometro`, que cuenta décimas de segundo y muestra el tiempo como `mm:ss.d`, con los botones **Iniciar**, **Parar**, **Vuelta** y **Reiniciar**.
+
+- El id del `setInterval` se guarda en una ref. Pulsar **Iniciar** dos veces seguidas no crea un segundo temporizador.
+- **Vuelta** añade el tiempo actual a una lista (`number[]` en el estado, sin mutarlo) y solo está activo mientras el cronómetro corre.
+- **Reiniciar** para el temporizador, pone el tiempo a 0 y borra las vueltas.
+- Si el componente se desmonta con el cronómetro en marcha, un efecto con limpieza detiene el temporizador.
+- Formatea minutos y segundos con dos dígitos, con `padStart` o con `new Intl.NumberFormat("es-ES", { minimumIntegerDigits: 2 })`.
+
+**Responde:** ¿por qué el id del temporizador va en una ref y no en el estado? ¿Qué pasaría si estuviera en el estado?
+
+**Amplía:** contar décimas sumando 1 cada 100 ms no es exacto, porque el navegador no garantiza el intervalo. Guarda en otra ref el instante de inicio (`Date.now()`) y calcula el tiempo transcurrido a partir de él.
+
+---
+
+## D · Proyecto integrador: cuaderno de notas del grupo
+
+El proyecto reúne `useReducer`, `useEffect` y `useRef` en una aplicación pequeña. Se hace en un proyecto Vite nuevo con TypeScript, dividido en componentes con props tipadas.
+
+### Tipos de partida
+
+```tsx
+interface Alumno {
+  id: string;
+  nombre: string;
+  nota: number; // de 0 a 10
+}
+
+type Accion =
+  | { tipo: "anadir"; id: string; nombre: string; nota: number }
+  | { tipo: "cambiarNota"; id: string; nota: number }
+  | { tipo: "eliminar"; id: string }
+  | { tipo: "cargar"; alumnos: Alumno[] }
+  | { tipo: "vaciar" };
+```
+
+El `id` de un alumno nuevo se crea fuera del reductor (por ejemplo, con `crypto.randomUUID()` en el manejador que despacha la acción): un reductor debe ser puro.
+
+### Requisitos
+
+1. **Estado con `useReducer`.** El estado es `Alumno[]`. La nota queda siempre entre 0 y 10 (lo garantiza el reductor, no el formulario) y un nombre vacío no añade nada. Sin `default` en el `switch`.
+2. **Formulario controlado.** Nombre y nota (`type="number"`) con sus eventos tipados. Tras añadir un alumno, el formulario se vacía y el foco vuelve al campo de nombre (`useRef`).
+3. **Datos derivados.** Total de alumnos, nota media (con un decimal, formateada con `Intl.NumberFormat`), número de aprobados (nota ≥ 5) y mejor alumno. Ninguno se guarda en el estado.
+4. **Título del documento.** Un efecto con limpieza muestra `Cuaderno (n alumnos)` en la pestaña.
+5. **Tecla Escape.** Pulsarla dentro del formulario lo vacía. No hace falta un efecto: usa `onKeyDown` en el JSX.
+6. **Cargar un ejemplo.** Un botón **Cargar ejemplo** pide `/alumnos.json` (en `public/`) con `fetch` y `async`/`await` desde su manejador, **no** desde un efecto. Muestra «Cargando…» y los errores, comprueba `respuesta.ok`, valida el JSON con la guarda y despacha `cargar`.
+7. **Componentes.** `Cuaderno` (estado), `FormularioAlumno`, `ListaAlumnos` y `Resumen`. Los datos bajan por props y los eventos suben con props `alXxx`, como en el tema UT 02.4.
+
+### Archivo de ejemplo para `public/alumnos.json`
+
+```json
+[
+  { "id": "a1", "nombre": "Lucía Fernández", "nota": 8 },
+  { "id": "a2", "nombre": "Mateo García", "nota": 4.5 },
+  { "id": "a3", "nombre": "Valeria Suárez", "nota": 9.5 },
+  { "id": "a4", "nombre": "Hugo Martín", "nota": 6 }
+]
+```
+
+### Ampliaciones
+
+- Una acción `deshacer` con un historial de estados anteriores.
+- Ordenar la lista por nombre o por nota, con un estado `useState<"nombre" | "nota">`.
+
+### Pregunta
+
+1. ¿Por qué la media va en una variable calculada y no en el estado?
+
+---

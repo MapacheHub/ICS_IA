@@ -1,0 +1,330 @@
+En esta práctica construyes una pequeña «Guía del centro» con Next.js y comprendes cómo se organizan las carpetas, cómo se comparte un layout, cómo se crean rutas y qué diferencia hay entre un componente de servidor y uno de cliente. 
+
+## Qué vas a construir
+
+Una aplicación con tres páginas que comparten cabecera y pie. En la página de aulas, cada aula es una tarjeta con un botón para marcarla como favorita.
+
+| Dirección | Archivo | Qué muestra |
+| --- | --- | --- |
+| `/` | `app/page.tsx` | Bienvenida |
+| `/sobre` | `app/sobre/page.tsx` | Información sobre la guía |
+| `/aulas` | `app/aulas/page.tsx` | Tres tarjetas de aulas |
+
+Al terminar, la carpeta `app/` tendrá esta estructura:
+
+```
+app/
+├── layout.tsx
+├── page.tsx
+├── globals.css
+├── sobre/
+│   └── page.tsx
+├── aulas/
+│   └── page.tsx
+└── componentes/
+    ├── TarjetaAula.tsx
+    └── BotonFavorita.tsx
+```
+
+Trabaja con la terminal y el editor abiertos. Cada parte termina con una comprobación: no pases a la siguiente si no funciona.
+
+## Entrega
+
+Entrega la carpeta comprimida del proyecto con la subcarpeta node_modules `node_modules` borrada. Añade previamente en el archivo README.md del proyecto las respuestas de la hoja final de la práctica.
+
+## Parte 1 · Crear el proyecto y explorar las carpetas
+
+1. Abre una terminal en la carpeta donde guardas tus prácticas y crea el proyecto. Escribe el comando en **una sola línea**:
+
+```bash
+npx create-next-app@latest mi-primer-next --ts --tailwind --eslint --app --no-src-dir --import-alias "@/*" --use-npm --turbopack
+```
+
+1. Entra en la carpeta y arranca el servidor de desarrollo:
+
+```bash
+cd mi-primer-next
+npm i
+npm run dev
+```
+
+1. Abre `http://localhost:3000` en el navegador. Verás la página de ejemplo de Next.js.
+2. Abre `next.config.ts`. Si contiene las opciones `cacheComponents` o `partialPrefetching`, elimínalas (apartado 2.4 de los apuntes).
+3. Deja la plantilla limpia:
+    - En `app/globals.css` deja únicamente la línea `@import "tailwindcss";`.
+    - Sustituye todo el contenido de `app/page.tsx` por esta página mínima:
+
+```tsx
+export default function PaginaInicio() {
+  return (
+    <>
+      <h1 className="mb-4 text-3xl font-bold">Guía del centro</h1>
+      <p>Bienvenido. Aquí encontrarás las aulas del centro y su capacidad.</p>
+    </>
+  );
+}
+```
+
+1. Recorre las carpetas y archivos del proyecto y rellena la **Tabla 1** de la hoja de respuestas. Te ayuda el apartado 1.3 de los apuntes.
+
+**Comprueba:** el navegador muestra el título «Guía del centro» y la consola no muestra errores.
+
+## Parte 2 · Rutas: una carpeta, una dirección
+
+1. Crea la carpeta `app/sobre` y dentro el archivo `page.tsx`:
+
+```tsx
+export default function PaginaSobre() {
+  return (
+    <>
+      <h1 className="mb-4 text-3xl font-bold">Sobre la guía</h1>
+      <p>
+        Esta aplicación es una práctica de iniciación a Next.js. Cada carpeta de{" "}
+        <code>app/</code> con un <code>page.tsx</code> es una página.
+      </p>
+    </>
+  );
+}
+```
+
+1. Abre `http://localhost:3000/sobre`. No has registrado la ruta en ningún sitio: la crea la carpeta.
+2. Crea `app/aulas/page.tsx` con una página provisional:
+
+```tsx
+export default function PaginaAulas() {
+  return <h1 className="mb-4 text-3xl font-bold">Aulas</h1>;
+}
+```
+
+1. Abre `http://localhost:3000/noexiste`. Next.js muestra su página 404 porque no hay ninguna carpeta con ese nombre.
+2. **Experimento.** Crea la carpeta `app/materiales` y dentro un archivo `lista.tsx` que devuelva un párrafo:
+
+```tsx
+export default function Lista() {
+  return <p>Lista de materiales</p>;
+}
+```
+
+1. Abre `/materiales` y `/materiales/lista`. Anota en la **Tabla 2** qué ocurre y por qué. Después borra la carpeta `app/materiales`.
+
+**Comprueba:** `/`, `/sobre` y `/aulas` funcionan, y `/noexiste` da un 404.
+
+## Parte 3 · El layout compartido
+
+El `layout.tsx` envuelve a todas las páginas: lo que pongas aquí aparece en todas las rutas. Cada página llega a través de `children`.
+
+1. Abre `app/layout.tsx` y localiza `children`.
+2. Sustituye su contenido por el siguiente. Fuera del código, tres cosas nuevas:
+    - `import type { Metadata }` importa solo un tipo de TypeScript. `metadata` define el título de la pestaña: Next.js lo lee por su nombre exacto.
+    - `Link` es el componente de Next.js para enlazar páginas sin recargar el navegador. Funciona como un `<a href>`.
+    - `LayoutProps` es un tipo que Next.js genera: no se importa.
+
+```tsx
+import type { Metadata } from "next";
+import Link from "next/link";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Guía del centro",
+  description: "Aulas y servicios del centro",
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html lang="es">
+      <body className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900">
+        <header className="bg-zinc-900 px-6 py-4 text-white">
+          <nav aria-label="Principal" className="flex gap-6">
+            <Link href="/">Inicio</Link>
+            <Link href="/aulas">Aulas</Link>
+            <Link href="/sobre">Sobre la guía</Link>
+          </nav>
+        </header>
+        <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">
+          {children}
+        </main>
+        <footer className="px-6 py-4 text-center text-sm text-zinc-500">
+          Guía del centro · Práctica de iniciación a Next.js
+        </footer>
+      </body>
+    </html>
+  );
+}
+```
+
+1. Navega con los enlaces de la cabecera por las tres páginas. La cabecera y el pie se mantienen; solo cambia el contenido de `main`.
+2. Responde la pregunta 1 de la hoja de respuestas.
+
+**Comprueba:** la pestaña del navegador se llama «Guía del centro» y la cabecera aparece en las tres páginas.
+
+## Parte 4 · Componentes de servidor y de cliente
+
+Por defecto, todo componente de Next.js se ejecuta en el servidor. Solo los que necesitan estado, eventos o el navegador deben ser de cliente. Vas a crear uno de cada tipo.
+
+1. Crea la carpeta `app/componentes`. Dentro crea `BotonFavorita.tsx`. **Escríbelo tal cual, sin nada más en la primera línea**:
+
+```tsx
+import { useState } from "react";
+
+export default function BotonFavorita() {
+  const [esFavorita, setEsFavorita] = useState(false);
+
+  return (
+    <button
+      type="button"
+      aria-pressed={esFavorita}
+      onClick={() => setEsFavorita((anterior) => !anterior)}
+      className="mt-3 rounded bg-zinc-900 px-3 py-1 text-white"
+    >
+      {esFavorita ? "★ Favorita" : "☆ Marcar como favorita"}
+    </button>
+  );
+}
+```
+
+1. Crea `TarjetaAula.tsx` en la misma carpeta. Es un componente de servidor: no tiene estado ni eventos.
+
+```tsx
+import BotonFavorita from "./BotonFavorita";
+
+interface PropsTarjetaAula {
+  nombre: string;
+  planta: number;
+  capacidad: number;
+}
+
+export default function TarjetaAula({
+  nombre,
+  planta,
+  capacidad,
+}: PropsTarjetaAula) {
+  return (
+    <article className="rounded-lg border border-zinc-300 bg-white p-4">
+      <h2 className="text-xl font-semibold">{nombre}</h2>
+      <p>
+        Planta {planta} · Capacidad: {capacidad} personas
+      </p>
+      <BotonFavorita />
+    </article>
+  );
+}
+```
+
+1. Sustituye `app/aulas/page.tsx` para que muestre una tarjeta por aula:
+
+```tsx
+import TarjetaAula from "../componentes/TarjetaAula";
+
+const aulas = [
+  { nombre: "Aula 101", planta: 1, capacidad: 30 },
+  { nombre: "Aula 204", planta: 2, capacidad: 24 },
+  { nombre: "Taller de informática", planta: 0, capacidad: 20 },
+];
+
+export default function PaginaAulas() {
+  return (
+    <>
+      <h1 className="mb-6 text-3xl font-bold">Aulas</h1>
+      <ul className="grid gap-4">
+        {aulas.map((aula) => (
+          <li key={aula.nombre}>
+            <TarjetaAula
+              nombre={aula.nombre}
+              planta={aula.planta}
+              capacidad={aula.capacidad}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
+1. Abre `http://localhost:3000/aulas`. Debe aparecer un **error**. Léelo entero, copia la primera frase en la **Pregunta 2** de la hoja de respuestas y explica con tus palabras qué te dice Next.js que ocurre.
+2. Arréglalo añadiendo esta línea al principio de `BotonFavorita.tsx`, y nada más:
+
+```tsx
+"use client";
+```
+
+1. Recarga `/aulas` y pulsa el botón de varias tarjetas. Cada una se marca y desmarca por separado, sin recargar la página.
+2. Con la página `/aulas` abierta pulsa **Ctrl + U** (ver código fuente) y busca «Taller de informática». Aparece en el HTML que llegó del servidor. Anota en la **Pregunta 3** qué te indica eso sobre `TarjetaAula`.
+3. Responde la **Pregunta 4**: ahora que `BotonFavorita` es de cliente, ¿por qué `TarjetaAula` no necesita `"use client"`?
+
+**Comprueba:** `/aulas` muestra tres tarjetas y cada botón funciona de forma independiente.
+
+## Parte 5 · Compila y comprueba
+
+1. Para el servidor de desarrollo con **Ctrl + C** y compila el proyecto:
+
+```bash
+npm run build
+```
+
+1. Al final aparece la lista de rutas. Copia en la **Tabla 3** el símbolo (○ o ƒ) que lleva cada una. ○ significa página estática, generada al compilar; ƒ significa página dinámica, generada en cada petición.
+2. Arranca la versión compilada y abre `http://localhost:3000/aulas`:
+
+```bash
+npm start
+```
+
+1. Comprueba que las tarjetas y los botones siguen funcionando igual.
+2. Completa la **Tabla 4**: clasifica cada elemento como componente de servidor o de cliente y justifica la respuesta.
+
+**Comprueba:** el comando `npm run build` termina sin errores y has rellenado las tablas 3 y 4.
+
+## Hoja de respuestas
+
+Nombre y grupo:
+
+**Tabla 1 · El proyecto por dentro (parte 1).** Escribe para qué sirve cada elemento.
+
+| Elemento | Para qué sirve |
+| --- | --- |
+| `app/` |  |
+| `app/page.tsx` |  |
+| `app/layout.tsx` |  |
+| `app/globals.css` |  |
+| `public/` |  |
+| `package.json` |  |
+| `next.config.ts` |  |
+| `node_modules/` |  |
+
+**Tabla 2 · Carpetas y rutas (parte 2).** Indica qué dirección crea cada archivo, o escribe «no es ruta» y explica por qué.
+
+| Archivo | Dirección o «no es ruta» | Explicación |
+| --- | --- | --- |
+| `app/page.tsx` |  |  |
+| `app/sobre/page.tsx` |  |  |
+| `app/aulas/page.tsx` |  |  |
+| `app/materiales/lista.tsx` |  |  |
+| `app/aulas/horario/page.tsx` (imagina que lo creas) |  |  |
+
+**Pregunta 1 (parte 3).** Quieres mostrar un aviso en todas las páginas de la aplicación. ¿En qué archivo lo pondrías y por qué?
+
+**Pregunta 2 (parte 4).** Primera frase del error que apareció y qué te dice Next.js:
+
+**Pregunta 3 (parte 4).** El nombre «Taller de informática» aparece en el código fuente de la página. ¿Qué te indica sobre cómo se ha generado `TarjetaAula`?
+
+**Pregunta 4 (parte 4).** `TarjetaAula` contiene a `BotonFavorita`, que es de cliente. ¿Por qué `TarjetaAula` no necesita `"use client"`?
+
+**Tabla 3 · Resultado de `npm run build` (parte 5).**
+
+| Ruta | ○ o ƒ |
+| --- | --- |
+| `/` |  |
+| `/aulas` |  |
+| `/sobre` |  |
+
+**Tabla 4 · ¿Servidor o cliente? (parte 5).** Escribe «servidor» o «cliente» y justifícalo en una frase.
+
+| Elemento | Servidor o cliente | Justificación |
+| --- | --- | --- |
+| `app/layout.tsx` |  |  |
+| `TarjetaAula` |  |  |
+| `BotonFavorita` |  |  |
+| Un pie de página con texto fijo |  |  |
+| Una lista de aulas leída de un array |  |  |
+| Un campo de búsqueda que filtra mientras escribes (`onChange`) |  |  |
+| Un menú que se abre y se cierra al pulsar un botón |  |  |

@@ -1,0 +1,55 @@
+## Carrito de la compra
+
+**Objetivo:** practicar el estado de una lista de objetos (añadir, incrementar, decrementar y eliminar), los **datos derivados** (totales, envío) y el renderizado condicional. Además, comprobar en la práctica por qué las `key` deben ser estables.
+
+!image.png
+
+### Datos de partida
+
+```tsx
+interface Producto {
+  id: string;
+  nombre: string;
+  precio: number; // euros
+  stock: number;
+}
+
+// El carrito solo guarda lo imprescindible: qué producto y cuántas unidades.
+interface ItemCarrito {
+  idProducto: string;
+  cantidad: number;
+}
+
+const catalogo: Producto[] = [
+  { id: "p1", nombre: "Teclado mecánico", precio: 59.9, stock: 5 },
+  { id: "p2", nombre: "Ratón inalámbrico", precio: 24.5, stock: 3 },
+  { id: "p3", nombre: "Alfombrilla XL", precio: 12, stock: 10 },
+  { id: "p4", nombre: "Monitor 27 pulgadas", precio: 219, stock: 2 },
+  { id: "p5", nombre: "Webcam Full HD", precio: 39.95, stock: 0 },
+  { id: "p6", nombre: "Auriculares con micrófono", precio: 34.5, stock: 4 },
+];
+```
+
+### Requisitos funcionales
+
+1. **Estructura.** Componentes: `Catalogo`, `TarjetaProducto`, `Carrito`, `FilaCarrito` y `ResumenCarrito`. Todos con `props` tipadas.
+
+!esquema_ejercicio3.png
+
+1. **Estado (`App.tsx`).**
+    - El único estado es `carrito: ItemCarrito[]`.
+    - **No** copies los datos del producto dentro del carrito y **no** guardes el total en el estado: nombre, precio y totales se obtienen a partir del catálogo.
+    - Las funciones `añadir`, `incrementar`, `decrementar`, `eliminar` y `vaciar` viven en `App` y se pasan por `props`.
+2. **Catálogo.**
+    - Cada `TarjetaProducto` muestra nombre, precio con formato de moneda (`Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" })`) y un botón **Añadir**.
+    - Si el producto ya está en el carrito, **no** se crea otra línea: se incrementa su cantidad.
+    - Si no queda stock, el botón se deshabilita y muestra *«Agotado»* (stock 0) o *«Sin más unidades»* (ya has añadido todo el stock).
+3. **Carrito.**
+    - Una `FilaCarrito` por cada línea, con nombre, precio unitario, subtotal, cantidad y los botones **−**, **+** y **Eliminar**.
+    - **−** con cantidad 1 elimina la línea. **+** no puede superar el stock.
+    - Cada fila incluye un `<input>` de texto «Nota para regalo» cuyo valor se guarda en el **estado local** de `FilaCarrito`.
+4. **Resumen derivado (`ResumenCarrito`).**
+    - Muestra el número de unidades, el subtotal, los gastos de envío y el total.
+    - Gastos de envío: **4,95 €**, gratis si el subtotal es **≥ 50 €**.
+    - Si el subtotal es menor de 50 €, muestra *«Te faltan X € para el envío gratis»*, junto con una barra de progreso. Si ya se alcanza, muestra *«¡Envío gratis!»*.
+5. **Carrito vacío.** Con el carrito vacío, `Carrito` muestra *«Tu carrito está vacío»*, no se muestra el resumen y no aparece el botón **Vaciar carrito**. Con productos, el botón **Vaciar carrito** elimina todas las líneas.
