@@ -1,0 +1,13 @@
+npm create vite@latest
+
+'pones nombre al proyecto, que va a ser el nombre de la carpeta'
+
+'no importa el nombre del pacage'
+
+React
+
+TypeScript + React Compiler 'creo'
+
+Onlint 'si mal no me acuerdo'
+
+Yes
