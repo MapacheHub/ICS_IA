@@ -1,3 +1,5 @@
+import { useReducer } from "react";
+
 interface Producto {
     id: number;
     nombre: string;
@@ -13,7 +15,8 @@ type Accion =
     | { tipo: "anadir"; producto: Producto }
     | { tipo: "quitar"; idProducto: number }
     | { tipo: "cambiarCantidad"; idProducto: number; cantidad: number }
-    | { tipo: "vaciar" };
+    | { tipo: "vaciar" }
+    | { tipo: "deshacer"};
 
 interface EstadoCarrito {
     lineas: LineaCarrito[];
@@ -112,7 +115,7 @@ export function Carrito() {
     <section>
       <h2>Catálogo</h2>
       <ul>
-        {CATALOGO.map((prod) => (
+        {catalogo.map((prod) => (
           <li key={prod.id}>
             {prod.nombre} — {formateadorEuro.format(prod.precio)}{" "}
             <button onClick={() => dispatch({ tipo: "anadir", producto: prod })}>
