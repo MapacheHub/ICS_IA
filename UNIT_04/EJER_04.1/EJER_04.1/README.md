@@ -51,21 +51,14 @@ B1 · Reloj con limpieza
 
 
 
-B2 · Estado persistente
-
-
-
-B3 · Detalle sin carreras
-
-
-
-B4 · ¿Necesito un efecto?
+B2 · ¿Necesito un efecto?
 
 
 
 C1 · Foco inteligente
 
-
+El cursor aparece en el campo donde falla
+Usamos el interrogate porque el ejecutarlo el campo es null, sin la interrogante saltaria un error
 
 C2 · Cronómetro con vueltas
 

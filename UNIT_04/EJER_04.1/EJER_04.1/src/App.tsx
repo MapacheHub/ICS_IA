@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import { Contador } from './A1'
+import { FormularioAcceso } from './C1'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -41,14 +42,8 @@ function App() {
         {/* B2 */}
 
 
-        {/* B3 */}
-
-
-        {/* B4 */}
-
-
         {/* C1 */}
-
+          <FormularioAcceso/>
 
         {/* C2 */}
 
