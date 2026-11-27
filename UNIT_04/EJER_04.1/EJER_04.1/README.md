@@ -62,7 +62,7 @@ Usamos el interrogate porque el ejecutarlo el campo es null, sin la interrogante
 
 C2 · Cronómetro con vueltas
 
-
+Va en un ref porque asi se guarda el dato mucho mas rapido. Si estubiera en el estado iria mas lento, por lo que si pulsases muy de seguido el boton de inicio se podria a llegar la circustancia de que se iniciasen dos cuentas
 
 D · Cuaderno de notas del grupo
 

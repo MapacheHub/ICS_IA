@@ -5,6 +5,7 @@ function formatearTiempo(decimasTotales: number): string {
     const segundos = Math.floor((decimasTotales % 600) / 10);
     const decimas = decimasTotales % 10;
 
+    // Formatea minutos y segundos con dos dígitos, con padStart o con new Intl.NumberFormat("es-ES", { minimumIntegerDigits: 2 }).
     const mm = String(minutos).padStart(2, "0");
     const ss = String(segundos).padStart(2, "0");
 
@@ -24,6 +25,7 @@ export function Cronometro() {
     function iniciar() {
         if (idIntervaloRef.current !== null) return;
 
+        //  Guarda en otra ref el instante de inicio (Date.now()) y calcula el tiempo transcurrido a partir de él.
         setEnMarcha(true);
         inicioRef.current = Date.now() - decimas * 100;
 
@@ -31,7 +33,7 @@ export function Cronometro() {
         idIntervaloRef.current = window.setInterval(() => {
             const transcurridoMs = Date.now() - inicioRef.current;
             setDecimas(Math.floor(transcurridoMs / 100));
-        }, 50);
+        }, 50);                               
     }
 
     function parar() {

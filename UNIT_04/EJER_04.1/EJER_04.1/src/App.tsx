@@ -5,6 +5,7 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import { Contador } from './A1'
 import { FormularioAcceso } from './C1'
+import { Cronometro } from './C2'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -43,10 +44,12 @@ function App() {
 
 
         {/* C1 */}
-          <FormularioAcceso/>
+        
+        <FormularioAcceso/>
 
         {/* C2 */}
 
+        <Cronometro/>
 
         {/* D */}
 
